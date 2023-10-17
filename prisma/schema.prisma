@@ -7,5 +7,26 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://johndoe:randompassword@localhost:5432/mydb?sslmode=disable"
+}
+
+enum ROLES {
+  USER
+  ADMIN
+}
+
+model User {
+  id String @id @default(uuid())
+
+  username     String? @unique
+  email        String  @unique
+  password     String
+  refreshToken String?
+
+  role ROLES? @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
